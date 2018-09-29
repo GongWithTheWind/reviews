@@ -1,0 +1,19 @@
+seeding to postgreSQL in node :
+
+for x in $(ls *.csv)
+do psql -c "\copy reviewlist from '~/Documents/Hack Reactor/SDC/reviews/database/SDC/DataGen/GeneratedData/$x' csv HEADER" SDC-sql; done;
+
+
+for data generation:
+
+(node ./DataGen/csvScripts/0_generator.js &
+ node ./DataGen/csvScripts/1_generator.js &
+ node ./DataGen/csvScripts/2_generator.js &
+ node ./DataGen/csvScripts/3_generator.js &
+ node ./DataGen/csvScripts/4_generator.js )
+   &&
+(node ./DataGen/csvScripts/5_generator.js &
+ node ./DataGen/csvScripts/6_generator.js &
+ node ./DataGen/csvScripts/7_generator.js & 
+ node ./DataGen/csvScripts/8_generator.js & 
+ node ./DataGen/csvScripts/9_generator.js)

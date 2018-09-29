@@ -24,3 +24,8 @@ coverage
 build/
 dist/
 
+# generated date files
+fakeReviews.js
+fakeUsers.js
+fakeReviewsText.js
+generatedData

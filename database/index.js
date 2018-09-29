@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-const getSpecificReviews = (min, max, callback) => { 
+const getSpecificReviews = (min, max, homeId, callback) => {
   connection.query(
     `SELECT * FROM reviews WHERE id BETWEEN ${min} AND ${max}`, (err, results) => {
       if (err) {
@@ -22,7 +22,7 @@ const getSpecificReviews = (min, max, callback) => {
 };
 
 
-const getFilteredReviews = (query, callback) => { 
+const getFilteredReviews = (query, homeId, callback) => {
   connection.query(
     `SELECT * FROM reviews WHERE review LIKE "%${query}%" 
      AND id BETWEEN 1 AND 201`, (err, results) => {
@@ -30,11 +30,11 @@ const getFilteredReviews = (query, callback) => {
         callback(err);
       }
       callback(results);
-    },
-  );
+    }
+  )
 };
 
-const addReview = (data, callback) => {
+const addReview = (data, homeId, callback) => {
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   const date = new Date();
   const created = months[date.getMonth()] + date.getFullYear();
@@ -44,35 +44,33 @@ const addReview = (data, callback) => {
         callback(err);
       }
       callback(results);
-    },
-  );
+    }
+  )
 };
 
-const deleteReview = (id, callback) => {
+const deleteReview = (id, homeId, callback) => {
   connection.query(
     `DELETE FROM reviews WHERE id = ${id}`, (err, results) => {
       if (err) {
         callback(err);
       }
       callback(results);
-    },
-  );
+    }
+  )
 };
 
-const updateReview = (data, callback) => {
+const updateReview = (data, homeId, callback) => {
   connection.query(
     `UPDATE reviews SET review = ${data.review} WHERE id = ${data.id}`, (err, results) => {
       if (err) {
         callback(err);
       }
       callback(results);
-    },
-  );
+    }
+  )
 };
 
-getFilteredReviews('lorem', (item) => { console.log(item); });
-
-const getSearchReviews = (min, max, query, callback) => {
+const getSearchReviews = (min, max, query, homeId, callback) => {
   connection.query(
     `SELECT * FROM reviews WHERE review LIKE "%${query}%" 
       LIMIT 10 OFFSET ${min}`, (err, results) => {
@@ -80,8 +78,8 @@ const getSearchReviews = (min, max, query, callback) => {
         callback(err);
       }
       callback(results);
-    },
-  );
+    }
+  )
 };
 
 module.exports.connection = connection;

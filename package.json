@@ -5,9 +5,12 @@
   "main": "bundle.js",
   "scripts": {
     "build": "webpack --watch",
-    "start": "node ./server.js --watch",
+    "start": "nodemon ./server.js",
     "seed": "node ./database/seed.js",
-    "test": "jest"
+    "test": "jest",
+    "genScript": "node ./database/SDC/DataGen/csvGenGenerator.js",
+    "generate": "node ./database/SDC/DataGen/SDCdataGeneration.js",
+    "fullGen": "npm run genScript && npm run generate"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +19,7 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "async": "^2.6.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.0-beta.6",
     "body-parser": "^1.18.3",
@@ -24,6 +28,7 @@
     "express": "^4.16.2",
     "faker": "^4.1.0",
     "fs": "0.0.1-security",
+    "json2csv": "^4.2.1",
     "moment": "^2.22.2",
     "mysql": "^2.16.0",
     "node-fetch": "^2.2.0",
@@ -48,6 +53,7 @@
     "eslint-plugin-react": "^7.11.1",
     "file-loader": "^2.0.0",
     "jest": "^23.6.0",
+    "nodemon": "^1.18.4",
     "webpack": "^4.17.2",
     "webpack-cli": "^3.1.0"
   },

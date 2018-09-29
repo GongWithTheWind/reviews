@@ -26,21 +26,29 @@ class App extends React.Component {
     };
   }
 
- fetcher(){
-    if(this.props.homeId !== undefined) {
-      this.setState({homeId: this.props.homeId})
-    }
-    fetch('/homes/' + this.state.homeId + '/reviews/1') //will make a request to localhost:3000/homes/100/reviews/1
-    .then(response => response.json()) 
-    .then((data) => {
-      console.log('FETCHER', data);
-      this.setState({data: data});
-      this.setState({firstPage: data});
-    })
-  }
 
   componentDidMount() {
-    this.fetcher();
+    const pullListing = () => {
+      let path = window.location.pathname;
+      path = path.substr(1);
+      const end = path.substr(path.indexOf('/'));
+      return end.slice(1, end.length - 1);
+    };
+
+    const listing = pullListing();
+
+    const fetcher = () => {
+      fetch(`/homes/${listing}/reviews/1`) //will make a request to localhost:3000/homes/100/reviews/1
+        .then(response => response.json())
+        .then((data) => {
+          console.log('FETCHER', data);
+          this.setState({ data });
+          this.setState({ firstPage: data });
+          this.setState({ homeId: listing });
+        });
+    };
+
+    fetcher();
   }
 
   handlePageChange(e, searchM) {  
@@ -61,8 +69,7 @@ class App extends React.Component {
         var newPages = this.state.pages.map((page)=>{return page + 1})
         this.setState({pages:newPages})
       })
-    }
-    else { //else you are in searchMode and return a new array with the new pages then change state of pages
+    } else { //else you are in searchMode and return a new array with the new pages then change state of pages
       console.log("searchM", this.state.query)
       //page change fetch should include the query and the id
       fetch('/reviews/queried/' + this.state.query + "/" + e) //simple search based off all reviews
