@@ -25,16 +25,6 @@ const getResults = (err, data) => {
   return results;
 };
 
-// to run your scripts in parallel use
-// funcs[0]();
-
-// async.parallel(funcs.slice(0, 10), (err, data) => {
-//   getResults(err, data);
-//   async.parallel(funcs.slice(10), getResults);
-// });
-
-
-
 const partitions = [];
 for (let i = 0; i < 10; i += 1) {
   if (i % 2 === 0) {

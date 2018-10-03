@@ -31,6 +31,8 @@ TABLESPACE pg_default;
 ALTER TABLE public.master_01
     OWNER to "Nicholas";
 
+SET CONSTRAINT_EXCLUSION = ON
+
 -- Partitions SQL
 
 
@@ -44,7 +46,6 @@ for (let i = 0; i < 1000; i += 1) {
 
     CREATE TABLE "public.${i}_reviews" PARTITION OF public.master_04
     FOR VALUES FROM ('${1 + (i * 10000)}') TO ('${1 + ((i + 1) * 10000)}');
-
   `;
   fs.appendFile('./schema.sql', partition);
 }

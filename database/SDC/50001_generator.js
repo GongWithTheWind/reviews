@@ -1,19 +1,9 @@
-const fs = require('fs');
 
-// set upper bound of entries
-const entries = 10000000; // 1M primary entries
-
-// set how many handles per file
-const chunk = 100000; // 50K primaries per file
-
-for (let i = 1; i < entries + 1; i += chunk) {
-  const fileName = `${i}_gen.js`;
-  const filler = `
 /*
 ********************************************************************************
 ********************************************************************************
 *****                                                                      *****
-*****                 Generated From genFileGenerator                      *****
+*****                      Generated From schemaGen                        *****
 *****               Builds a master table with 1000 partitions             ***** 
 *****                                                                      *****
 ********************************************************************************
@@ -26,17 +16,16 @@ const moment = require('moment');
 // console.log('STARTED');
 // const date = new Date();
 
-const listings = [];
 console.time('TIMER');
-let jsonString = '';
-for (let i = ${i}; i < ${i + chunk}; i += 1) { // ${chunk} listings
+// for (let i = 50001; i < 100001; i += 1) { // 50000 listings
+const generateString = (i, jsonString = '') => {
   const numberOfReviews = faker.random.number({
     min: 1,
     max: 20,
   });
 
   const home = {
-    home_id: i,
+    homeId: i,
     reviews: [],
   };
 
@@ -45,7 +34,7 @@ for (let i = ${i}; i < ${i + chunk}; i += 1) { // ${chunk} listings
     const review = {
       id: j,
       review: faker.lorem.sentence(),
-      created: moment.utc((faker.date.past())).format("MMMM YYYY"),
+      created: moment.utc((faker.date.past())).format("'MMMM YYYY"),
       user: {
         id: userId,
         name: faker.name.firstName(),
@@ -54,18 +43,33 @@ for (let i = ${i}; i < ${i + chunk}; i += 1) { // ${chunk} listings
     };
     home.reviews.push(review);
   }
-  listings.push(home);
-}
+  jsonString += JSON.stringify(home) + '\n';
+  if (i === 1000) {
+    fs.writeFileSync('./DataGen/GeneratedData/JSON/TEST_gen.js', jsonString);
+    i += 1;
+    console.log('Created File');
+    generateString(i);
+  } else if (i % 1000 === 0) {
+    fs.appendFile('./DataGen/GeneratedData/JSON/TEST_gen.js', jsonString,
+      (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        if (i !== 100000) {
+          console.log('AGAIN', i);
+          i += 1;
+          return generateString(i);
+        } else {
+          console.log('END');
+          console.log('50001 - 100001 were saved!   ||   ', console.timeEnd('TIMER'));
+          return;
+        }
+      });
+  } else {
+    i += 1;
+    return generateString(i, jsonString);
+  }
+};
 
-fs.writeFile('./DataGen/GeneratedData/JSON/${fileName}', JSON.stringify(listings),
-  (err) => {
-    if (err) {
-      console.error(err);
-    }
-    console.timeEnd('TIMER');
-    console.log('SAVED');
-  });
-`;
-
-  fs.writeFile(`./DataGen/scriptGen/${i}_generator.js`, filler);
-}
+generateString(1);
