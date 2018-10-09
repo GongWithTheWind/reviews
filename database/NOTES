@@ -1,7 +1,7 @@
 seeding to postgreSQL in node :
 
 for x in $(ls *.csv)
-do psql -c "\copy reviewlist from '~/Documents/Hack Reactor/SDC/reviews/database/SDC/DataGen/GeneratedData/$x' csv HEADER" SDC-sql; done;
+do psql -c "\copy master_04 from '~/Documents/Hack Reactor/SDC/reviews/database/SDC/DataGen/GeneratedData/$x' csv HEADER" SDC-sql; done;
 
 
 for data generation:

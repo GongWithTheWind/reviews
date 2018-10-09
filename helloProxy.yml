@@ -1,0 +1,80 @@
+config:
+  target: 'http://localhost:3000'
+  phases:
+    - duration: 300
+      arrivalRate: 70
+  payload:
+    path: './artillery.csv'
+    fields:
+      - 'homeId'
+      - 'pageId'
+      - 'query'
+      - 'userId'
+scenarios:
+  - name: 'Get home page'
+    weight: 550
+    flow:
+
+      - get:
+          url: "/homes/{{ $randomNumber(1, 10000) }}/reviews/1"
+      - get:
+          url: "/homes/{{ $randomNumber(1, 10000) }}/reviews/1"
+      - get:
+          url: "/homes/{{ $randomNumber(1, 10000) }}/reviews/1"
+      - get:
+          url: "/homes/{{ $randomNumber(1, 10000) }}/reviews/1"
+      - get:
+          url: "/homes/{{ $randomNumber(1, 10000) }}/reviews/1"
+  - name: 'Get home page - non cached'
+    weight: 100
+    flow:
+      - get:
+          url: "/homes/{{ $randomNumber(10000, 10000000) }}/reviews/1"
+      - get:
+          url: "/homes/{{ $randomNumber(10000, 10000000) }}/reviews/1"
+      - get:
+          url: "/homes/{{ $randomNumber(10000, 10000000) }}/reviews/1"
+      - get:
+          url: "/homes/{{ $randomNumber(10000, 10000000) }}/reviews/1"
+      - get:
+          url: "/homes/{{ $randomNumber(10000, 10000000) }}/reviews/1"
+  - name: 'Get search reviews'
+    weight: 79
+    flow:
+      - get:
+          url: "/homes/{{ $randomNumber(1, 10000) }}/reviews/queried/{{ query }}/1"
+      - get:
+          url: "/homes/{{ $randomNumber(1, 10000) }}/reviews/queried/{{ query }}/1"
+      - get:
+          url: "/homes/{{ $randomNumber(1, 10000) }}/reviews/queried/{{ query }}/1"
+      - get:
+          url: "/homes/{{ $randomNumber(1, 10000) }}/reviews/queried/{{ query }}/1"
+      - get:
+          url: "/homes/{{ $randomNumber(1, 10000) }}/reviews/queried/{{ query }}/1"
+  - name: 'Get search reviews - non cached'
+    weight: 260
+    flow:
+      - get:
+          url: "/homes/{{ $randomNumber(10000, 10000000) }}/reviews/queried/{{ query }}/1"
+      - get:
+          url: "/homes/{{ $randomNumber(10000, 10000000) }}/reviews/queried/{{ query }}/1"
+      - get:
+          url: "/homes/{{ $randomNumber(10000, 10000000) }}/reviews/queried/{{ query }}/1"
+      - get:
+          url: "/homes/{{ $randomNumber(10000, 10000000) }}/reviews/queried/{{ query }}/1"
+      - get:
+          url: "/homes/{{ $randomNumber(10000, 10000000) }}/reviews/queried/{{ query }}/1"
+  - name: 'postreview'
+    weight: 10
+    flow:
+      - post:
+          url: "/homes/10000001/{{ $randomNumber(1, 100) }}"
+          json:
+            data: "TEST"
+
+  - name: 'delete home'
+    weight: 1
+    flow:
+      - delete:
+          url: "/homes/10000001/home"
+
