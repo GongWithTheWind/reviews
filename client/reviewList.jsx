@@ -68,34 +68,32 @@ color:#f4f4f4;
 `
 
 
-class ReviewList extends Component {
-    
-  render() {
-    let reviewNodes = this.props.data.map(function(review) {
+const ReviewList = ({ data }) => {
+  const ReviewNodes =
+    data.map((review) => {
+      console.log(review.created);
       return (
-       <div key={review.id} >
-       <br />
-         <br />
-         <Pic src={review.photo} />
-         <User>{review.user}</User>
-         <Date>{review.created.slice(1, review.created.length)}</Date>
-         <Text>{review.review}
-         </Text>
-         <Line>_______________________________________________________________</Line>
-       </div>
-       
+        <div key={review.id}>
+          <br />
+          <br />
+          <Pic src={review.photo} />
+          <User>{review.user}</User>
+          <Date>{review.created}</Date>
+          <Text>{review.review}</Text>
+          <Line>_______________________________________________________________</Line>
+        </div>
+
       );
     });
 
-    return (
-      <div id="project-reviews" className="reviewList">
-        <ul>
-          {reviewNodes}
-        </ul>
-        
-      </div>
-    );
-  }
+  return (
+    <div id="project-reviews" className="reviewList">
+      <ul>
+        {ReviewNodes}
+      </ul>
+
+    </div>
+  );
 };
 
 export default ReviewList;

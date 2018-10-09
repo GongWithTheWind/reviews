@@ -26,7 +26,7 @@ const moment = require('moment');
 // console.log('STARTED');
 // const date = new Date();
 
-const listings = [];
+const entries = [];
 console.time('TIMER');
 let jsonString = '';
 for (let i = ${i}; i < ${i + chunk}; i += 1) { // ${chunk} listings
@@ -35,15 +35,17 @@ for (let i = ${i}; i < ${i + chunk}; i += 1) { // ${chunk} listings
     max: 20,
   });
 
-  const home = {
-    home_id: i,
-    reviews: [],
-  };
+  // const home = {
+  //   home_id: i,
+  //   reviews: [],
+  // };
 
   for (let j = 1; j <= numberOfReviews; j += 1) {
     const userId = faker.random.number({ min: 1, max: 100 });
-    const review = {
-      id: j,
+
+    const entry = {
+      home_id: i,
+      review_id: j,
       review: faker.lorem.sentence(),
       created: moment.utc((faker.date.past())).format("MMMM YYYY"),
       user: {
@@ -52,12 +54,13 @@ for (let i = ${i}; i < ${i + chunk}; i += 1) { // ${chunk} listings
         photo: 'https://loremflickr.com/320/240?lock=' + userId + '/cat',
       },
     };
-    home.reviews.push(review);
+
+    entries.push(entry);
   }
-  listings.push(home);
+  // listings.push(home);
 }
 
-fs.writeFile('./DataGen/GeneratedData/JSON/${fileName}', JSON.stringify(listings),
+fs.writeFile('./DataGen/GeneratedData/JSON/${fileName}', JSON.stringify(entries),
   (err) => {
     if (err) {
       console.error(err);

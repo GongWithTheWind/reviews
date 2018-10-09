@@ -6,9 +6,9 @@ const Promise = require('bluebird');
 
 console.time('Starting Generation');
 
-const scriptsFolder = './DataGen/scriptGen'; // add your scripts to folder named scripts
-const files = fs.readdirSync(scriptsFolder); // reading files from folders
-// files = files.filter(file => file[0] !== '.');
+const scriptsFolder = './DataGen/csvScripts/cass'; // add your scripts to folder named scripts
+let files = fs.readdirSync(scriptsFolder); // reading files from folders
+files = files.filter(file => file[0] !== '.');
 // // const funcs = files.map(file => console.log(path.join(__dirname,`/DataGen/Scripts/${file}`)));
 // const funcs = files.map(file => exec.bind(null, `node ./DataGen/scriptGen/${file}`));
 // // const funcs = [exec.bind(null, `node ./DataGen/Scripts/${files[0]}`)];
@@ -41,7 +41,7 @@ const genJson = (factor, i = 0) => {
   // for (let i = 0; i < factor; i += 1) {
     console.log('Generating batch ', i);
   const chunk = files.slice((i * factor), ((i + 1) * factor));
-  const funcs = chunk.map(file => exec.bind(null, `node ./DataGen/scriptGen/${file}`));
+  const funcs = chunk.map(file => exec.bind(null, `node ./DataGen/csvScripts/cass/${file}`));
   async.parallel(funcs, (err) => {
     if (err) {
       console.error(err);
@@ -60,4 +60,4 @@ const genJson = (factor, i = 0) => {
   });
 };
 
-genJson(10);
+genJson(5);
